@@ -1,0 +1,27 @@
+scalar Date
+scalar JSON
+
+type Query {
+  obtenerUsuarios: [Usuario]
+  usuario(id: ID!): Usuario
+}
+
+type Mutation {
+  crearUsuario(nombre: String, casado: Boolean, edad: Int, sueldo:Float, rolId:Int, fechaNacimiento:Date): Usuario
+}
+
+type Subscription {
+  usuarioCreado: Usuario
+}
+
+
+
+type Usuario {
+  id: ID
+  nombre: String
+  casado: Boolean
+  edad: Int
+  sueldo:Float
+  rolId:Rol
+  fechaNacimiento:Date
+}

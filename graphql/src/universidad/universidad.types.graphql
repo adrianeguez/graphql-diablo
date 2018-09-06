@@ -1,0 +1,17 @@
+type Query {
+  traerTodos: [Universidad]
+  obtenerPorId(id: ID!): Universidad
+}
+
+type Mutation {
+  crearUniversidad(nombre: String, acreditada: Boolean, numeroFacultades: Int, fechaCreacion:Date): Universidad
+}
+
+
+type Universidad {
+  id: ID
+  nombre: String
+  acreditada: Boolean
+  numeroFacultades: Int
+  fechaCreacion:Date
+}

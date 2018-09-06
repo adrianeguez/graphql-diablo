@@ -1,0 +1,19 @@
+type Query {
+  obtenerRoles: [Rol]
+  rol(id: ID!): Rol
+}
+
+type Mutation {
+  crearRol(nombre: String): Rol
+}
+
+type Subscription {
+  rolCreado: Rol
+}
+
+type Rol {
+  id: ID
+  nombre: String
+}
+
+
