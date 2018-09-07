@@ -2,7 +2,7 @@ import { Get, Controller, Param, Post, Body, Query, Headers, HttpStatus, HttpCod
 import { AppService } from './app.service';
 import { Seguridad } from 'politicas/seguridad.decorator';
 import { of, from } from 'rxjs';
-import { RolesGuard } from 'seguridad/seguridad.guard';
+import { SeguridadManticoreLabsGuard } from 'seguridad/seguridad.guard';
 import { tieneCabeceraSesionValida, tieneCabeceraSesionValidaPromesa, tieneCabeceraSesionValida$ } from 'politicas/tieneCabeceraSesionValida';
 
 @Controller()
@@ -30,7 +30,7 @@ export class AppController {
 
 
   @Get('hola')
-  @UseGuards(RolesGuard)
+  @UseGuards(SeguridadManticoreLabsGuard)
   @Seguridad([tieneCabeceraSesionValida, tieneCabeceraSesionValidaPromesa, tieneCabeceraSesionValida$])
   hola(
 
