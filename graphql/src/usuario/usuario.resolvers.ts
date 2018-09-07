@@ -1,8 +1,8 @@
 import { ParseIntPipe, UseGuards, HttpException, ForbiddenException } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, Subscription, Root, Parent, Context, Info } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { UsuarioService } from './usuario.service';
-import { UsuarioInterface } from './interfaces/usuario.interface';
+import { UsuarioInterface, UsuarioCrearDtoInterface } from './interfaces/usuario.interface';
 import { RolService } from 'rol/rol.service';
 
 const pubSub = new PubSub();
@@ -25,9 +25,20 @@ export class UsuarioResolvers {
     }
 
     @Mutation('crearUsuario')
-    async create(@Args() args: UsuarioInterface): Promise<UsuarioInterface> {
+    async create(
+        @Args() objeto: UsuarioCrearDtoInterface,
+        @Root() root,
+        @Parent() parent,
+        @Context() context,
+        @Info() info,
+    ): Promise<UsuarioInterface> {
+        console.log('usuario', objeto);
+        console.log('root', root);
+        console.log('parent', parent);
+        console.log('context', context);
+        console.log('info', info);
         // throw new ForbiddenException('Error');
-        const usuarioCreado = await this.usuarioService.create(args);
+        const usuarioCreado = await this.usuarioService.create(objeto.usuario);
         pubSub.publish('usuarioCreado', { usuarioCreado: usuarioCreado });
         usuarioCreado.rolId = this.rolService.findOneById(Number(usuarioCreado.rolId));
         return usuarioCreado;

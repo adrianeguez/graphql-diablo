@@ -1,13 +1,22 @@
 scalar Date
 scalar JSON
 
+input CrearUsuarioDto {
+  nombre: String
+  casado: Boolean 
+  edad: Int
+  sueldo:Float
+  rolId:Int
+  fechaNacimiento:Date
+}
+
 type Query {
   obtenerUsuarios: [Usuario]
   usuario(id: ID!): Usuario
 }
 
 type Mutation {
-  crearUsuario(nombre: String, casado: Boolean, edad: Int, sueldo:Float, rolId:Int, fechaNacimiento:Date): Usuario
+  crearUsuario(usuario:CrearUsuarioDto!): Usuario
 }
 
 type Subscription {

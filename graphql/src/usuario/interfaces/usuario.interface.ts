@@ -7,5 +7,9 @@ export interface UsuarioInterface {
     edad: number;
     sueldo: number;
     rolId: RolInterface | number;
-    fechaNacimiento:Date;
+    fechaNacimiento: Date;
+}
+
+export interface UsuarioCrearDtoInterface {
+    usuario: UsuarioInterface;
 }
