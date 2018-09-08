@@ -1,13 +1,15 @@
-import { Get, Controller, Param, Post, Body, Query, Headers, HttpStatus, HttpCode, NotFoundException, Header, UseGuards } from '@nestjs/common';
+import { Get, Controller, Param, Post, Body, Query, Headers, HttpStatus, HttpCode, NotFoundException, Header, UseGuards, UseInterceptors, FileInterceptor, UploadedFile } from '@nestjs/common';
 import { AppService } from './app.service';
-import { Seguridad } from 'politicas/seguridad.decorator';
-import { of, from } from 'rxjs';
 import { SeguridadManticoreLabsGuard } from 'seguridad/seguridad.guard';
 import { tieneCabeceraSesionValida, tieneCabeceraSesionValidaPromesa, tieneCabeceraSesionValida$ } from 'politicas/tieneCabeceraSesionValida';
+import { Seguridad } from 'seguridad/seguridad.decorator';
+import { politicasController } from 'app.controller-politicas';
+import { ManticoreLoggerService } from 'logger/logger.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService,
+    private readonly manticoreLoggerService: ManticoreLoggerService) { }
 
   @Post('usuario/:id')
   @HttpCode(201)
@@ -31,10 +33,21 @@ export class AppController {
 
   @Get('hola')
   @UseGuards(SeguridadManticoreLabsGuard)
-  @Seguridad([tieneCabeceraSesionValida, tieneCabeceraSesionValidaPromesa, tieneCabeceraSesionValida$])
+  @Seguridad(politicasController.hola)
   hola(
 
   ) {
+    this.manticoreLoggerService.error('pene','trace');
+    this.manticoreLoggerService.warn('pene','trace');
+    this.manticoreLoggerService.log('pene','trace');
     return 'Hola';
   }
+
+  @Post('subir')
+  @UseInterceptors(FileInterceptor('file'))
+  subirArchivo(@UploadedFile() file) {
+    console.log(file);
+    return 'ok';
+  }
+
 }

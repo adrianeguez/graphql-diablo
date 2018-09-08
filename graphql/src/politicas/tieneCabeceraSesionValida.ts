@@ -11,7 +11,6 @@ export function tieneCabeceraSesionValida(req, res): boolean {
 
 export const tieneCabeceraSesionValidaPromesa = (request, response) => {
     return new Promise((resolve, reject) => {
-
         fs.readFile('', 'utf8', (errorLeyendo, datoLectura) => {
             if (request && response) {
                 console.log('Llego request y response a funcion Promesa');
