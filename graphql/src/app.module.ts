@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, HttpModule, MulterModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -16,10 +16,14 @@ import { LoggerModule } from 'logger/logger.module';
       installSubscriptionHandlers: true,
       resolvers: { JSON: GraphQLJSON },
     }),
+    MulterModule.register({
+      dest: '/upload',
+    }),
     UniversidadModule,
     UsuarioModule,
     RolModule,
-    LoggerModule
+    LoggerModule,
+    HttpModule
   ],
   controllers: [AppController],
   providers: [

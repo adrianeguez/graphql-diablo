@@ -1,15 +1,17 @@
-import { Get, Controller, Param, Post, Body, Query, Headers, HttpStatus, HttpCode, NotFoundException, Header, UseGuards, UseInterceptors, FileInterceptor, UploadedFile } from '@nestjs/common';
+import { Get, Controller, Param, Post, Body, Query, Headers, HttpStatus, HttpCode, NotFoundException, Header, UseGuards, UseInterceptors, FileInterceptor, UploadedFile, HttpService, FilesInterceptor, Req, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { SeguridadManticoreLabsGuard } from 'seguridad/seguridad.guard';
 import { tieneCabeceraSesionValida, tieneCabeceraSesionValidaPromesa, tieneCabeceraSesionValida$ } from 'politicas/tieneCabeceraSesionValida';
 import { Seguridad } from 'seguridad/seguridad.decorator';
 import { politicasController } from 'app.controller-politicas';
 import { ManticoreLoggerService } from 'logger/logger.service';
+import { map } from 'rxjs/operators';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService,
-    private readonly manticoreLoggerService: ManticoreLoggerService) { }
+    private readonly manticoreLoggerService: ManticoreLoggerService,
+    private readonly httpService: HttpService) { }
 
   @Post('usuario/:id')
   @HttpCode(201)
@@ -35,17 +37,30 @@ export class AppController {
   @UseGuards(SeguridadManticoreLabsGuard)
   @Seguridad(politicasController.hola)
   hola(
-
+    @Res() res
   ) {
-    this.manticoreLoggerService.error('pene','trace');
-    this.manticoreLoggerService.warn('pene','trace');
-    this.manticoreLoggerService.log('pene','trace');
-    return 'Hola';
+
+
+    this.manticoreLoggerService.error('error', 'trace');
+    this.manticoreLoggerService.warn('warn', 'trace');
+    this.manticoreLoggerService.log('log', 'trace');
+    /*
+    return this.httpService.get('https://jsonplaceholder.typicode.com/todos/1')
+      .pipe(
+        map((req) => {
+          console.log('req', req)
+          return req.data;
+        })
+      );
+      */
+     return res.download('\\upload\\04689bf5200f0c67179c40f18b31b6e1', 'nombre.docx')
   }
 
   @Post('subir')
   @UseInterceptors(FileInterceptor('file'))
-  subirArchivo(@UploadedFile() file) {
+  subirArchivo(
+    @UploadedFile() file
+  ) {
     console.log(file);
     return 'ok';
   }
